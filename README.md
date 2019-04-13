@@ -4,5 +4,6 @@ Under supervision of [Dr. Maryam Amirmazlaghani](http://ceit.aut.ac.ir/autcms/pe
 
 
 ### \< Homework one >
-* Solve optimization problem using [`cvxpy`]('https://www.cvxpy.org/') library
-* Minimize `Quadratic Functions` : <img src="https://latex.codecogs.com/svg.latex?\Large&space;\frac{1}{2}x^TPx + q^T + r" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
+* Solve optimization problem using [`cvxpy`](https://www.cvxpy.org/) library
+* Minimize [`Quadratic Functions`](https://latex.codecogs.com/svg.latex?\Large&space;\frac{1}{2}x^TPx+q^T+r)
+<!--: <img src="https://latex.codecogs.com/svg.latex?\Large&space;\frac{1}{2}x^TPx+q^T+r" title="\frac{1}{2}x^TPx+q^T+r" />-->
