@@ -1,15 +1,14 @@
 import numpy as np
-from HW2.tools import norm_p, \
-    rosenbrock_function as f, rosenbrock_grad as grad_f, rosenbrock_hessian as hessian_f
+from HW2.tools import norm_p, RosenbrockProvider as F_Provider
 
 
 def steepest_descent_direction(x):
-    return -1 * grad_f(*x)
+    return -1 * F_Provider.grad(*x)
 
 
 def newton_direction(x):
-    h_i = np.linalg.inv(hessian_f(*x))
-    g = grad_f(*x)
+    h_i = np.linalg.inv(F_Provider.hessian(*x))
+    g = F_Provider.grad(*x)
     return -1 * np.dot(h_i, g)
 
 
@@ -18,13 +17,13 @@ def BFGS_direction(x):
     global last_BFGS_H, last_step_length, last_x
 
     if last_BFGS_H is None:
-        H = np.linalg.inv(hessian_f(*x))
+        H = np.linalg.inv(F_Provider.hessian(*x))
     else:
-        last_p = -1 * np.dot(last_BFGS_H, grad_f(*x))
+        last_p = -1 * np.dot(last_BFGS_H, F_Provider.grad(*x))
         x_kPlus1 = last_x
         s = last_step_length * last_p
         x_k = x_kPlus1 - s
-        y = grad_f(*x_kPlus1) - grad_f(*x_k)
+        y = F_Provider.grad(*x_kPlus1) - F_Provider.grad(*x_k)
         m = 1 / np.dot(s, y)
         s = s[:, None]  # shape: (2,) -> (2,1)
         y = y[:, None]
@@ -38,7 +37,7 @@ def BFGS_direction(x):
         H = rL + rR
 
     last_BFGS_H = H
-    return -1 * np.dot(H, grad_f(*x))
+    return -1 * np.dot(H, F_Provider.grad(*x))
 
 
 def first_wolf_condition(x, p, alpha, c):
@@ -46,7 +45,7 @@ def first_wolf_condition(x, p, alpha, c):
     sufficient decrease condition
     """
     new_x = x + alpha * p
-    return f(*new_x) <= f(*x) + c * alpha * np.dot(p, grad_f(*x))
+    return F_Provider.f(*new_x) <= F_Provider.f(*x) + c * alpha * np.dot(p, F_Provider.grad(*x))
 
 
 def backtracking_line_length(x, p):
@@ -61,7 +60,7 @@ def line_search(x, descent_direction_algorithm=steepest_descent_direction):
     global last_BFGS_H, last_x, last_step_length
     last_BFGS_H = None
     step = 0
-    while norm_p(grad_f(*x)) >= TOLERANCE and step < MAX_STEP:
+    while norm_p(F_Provider.grad(*x)) >= TOLERANCE and step < MAX_STEP:
         p = descent_direction_algorithm(x)
         alpha = backtracking_line_length(x, p)
         x = x + alpha * p

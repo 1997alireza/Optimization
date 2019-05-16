@@ -1,15 +1,14 @@
 import numpy as np
-from HW2.tools import norm_p, \
-    rosenbrock_function as f, rosenbrock_grad as grad_f, rosenbrock_hessian as hessian_f
+from HW2.tools import norm_p, RosenbrockProvider as F_Provider
 import matplotlib.pyplot as plt
 
 
 def approximate_model_generator(x, b_matrix):
-    return lambda p: f(*x) + np.dot(grad_f(*x), p) + 0.5 * np.dot(np.dot(p, b_matrix), p)
+    return lambda p: F_Provider.f(*x) + np.dot(F_Provider.grad(*x), p) + 0.5 * np.dot(np.dot(p, b_matrix), p)
 
 
 def cauchy_point(x, b_matrix, delta):
-    g_matrix = grad_f(*x)
+    g_matrix = F_Provider.grad(*x)
     gT_b_g = np.dot(np.dot(g_matrix, b_matrix), g_matrix)
     gT_g = np.dot(g_matrix, g_matrix)
     g_norm = norm_p(g_matrix)
@@ -23,7 +22,7 @@ def cauchy_point(x, b_matrix, delta):
 
 
 def dog_leg(x, b_matrix, delta):
-    g_matrix = grad_f(*x)
+    g_matrix = F_Provider.grad(*x)
     gT_b_g = np.dot(np.dot(g_matrix, b_matrix), g_matrix)
     gT_g = np.dot(g_matrix, g_matrix)
     grad_path_best_alpha = gT_g / gT_b_g
@@ -51,10 +50,10 @@ def trust_region(x, subproblem_solver=cauchy_point):
     plot_x, plot_y = [], []
     while step < MAX_STEP and abs(rho) <= RHO_TOLERANCE:
         # b_matrix = np.zeros([2,2])
-        b_matrix = hessian_f(*x)  # use hessian matrix as Bk
+        b_matrix = F_Provider.hessian(*x)  # use hessian matrix as Bk
         p = subproblem_solver(x, b_matrix, delta)
         approximate_model = approximate_model_generator(x, b_matrix)
-        delta_f = f(*x) - f(*(x + p))
+        delta_f = F_Provider.f(*x) - F_Provider.f(*(x + p))
         delta_m = approximate_model(np.zeros(2)) - approximate_model(p)
         rho = delta_f / delta_m
         if rho < .25:
