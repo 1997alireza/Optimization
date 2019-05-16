@@ -1,5 +1,5 @@
 import numpy as np
-from HW2.tools import norm_p, inverse_matrix_2_2, \
+from HW2.tools import norm_p, \
     rosenbrock_function as f, rosenbrock_grad as grad_f, rosenbrock_hessian as hessian_f
 import matplotlib.pyplot as plt
 
@@ -28,7 +28,7 @@ def dog_leg(x, b_matrix, delta):
     gT_g = np.dot(g_matrix, g_matrix)
     grad_path_best_alpha = gT_g / gT_b_g
     p_u = -grad_path_best_alpha * g_matrix
-    p_b = -np.dot(inverse_matrix_2_2(b_matrix), g_matrix)
+    p_b = -np.dot(np.linalg.inv(b_matrix), g_matrix)
     tau = delta / norm_p(p_u)
     if tau <= 1:
         return tau * p_u

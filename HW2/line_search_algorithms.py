@@ -1,6 +1,6 @@
 import numpy as np
 from HW2.tools import norm_p, \
-    rosenbrock_function as f, rosenbrock_grad as grad_f, rosenbrock_inverse_hessian as inv_hessian_f
+    rosenbrock_function as f, rosenbrock_grad as grad_f, rosenbrock_hessian as hessian_f
 
 
 def steepest_descent_direction(x):
@@ -8,7 +8,7 @@ def steepest_descent_direction(x):
 
 
 def newton_direction(x):
-    h_i = inv_hessian_f(*x)
+    h_i = np.linalg.inv(hessian_f(*x))
     g = grad_f(*x)
     return -1 * np.dot(h_i, g)
 
@@ -18,7 +18,7 @@ def BFGS_direction(x):
     global last_BFGS_H, last_step_length, last_x
 
     if last_BFGS_H is None:
-        H = inv_hessian_f(*x)
+        H = np.linalg.inv(hessian_f(*x))
     else:
         last_p = -1 * np.dot(last_BFGS_H, grad_f(*x))
         x_kPlus1 = last_x
