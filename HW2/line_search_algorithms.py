@@ -2,8 +2,6 @@ import numpy as np
 from HW2.tools import norm_p, \
     rosenbrock_function as f, rosenbrock_grad as grad_f, rosenbrock_inverse_hessian as inv_hessian_f
 
-TOLERANCE, MAX_STEP = .001, 1000
-
 
 def steepest_descent_direction(x):
     return -1 * grad_f(*x)
@@ -58,11 +56,12 @@ def backtracking_line_length(x, p):
     return alpha
 
 
+TOLERANCE, MAX_STEP = .001, 1000
 def line_search(x, descent_direction_algorithm=steepest_descent_direction):
     global last_BFGS_H, last_x, last_step_length
     last_BFGS_H = None
     step = 0
-    while norm_p(grad_f(*x)) >= TOLERANCE and step <= MAX_STEP:
+    while norm_p(grad_f(*x)) >= TOLERANCE and step < MAX_STEP:
         p = descent_direction_algorithm(x)
         alpha = backtracking_line_length(x, p)
         x = x + alpha * p
