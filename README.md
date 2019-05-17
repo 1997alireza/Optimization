@@ -8,7 +8,7 @@ Under supervision of [Dr. Maryam Amirmazlaghani](http://ceit.aut.ac.ir/autcms/pe
 * Minimize [`Quadratic Functions`](https://latex.codecogs.com/svg.latex?\Large&space;\frac{1}{2}x^TPx+q^T+r;%20P%20\in%20S^n%20{\color{Red}%20\textup{%20convex}%20\textup{%20if%20}%20P%20\succeq%200})
 <!--: <img src="https://latex.codecogs.com/svg.latex?\Large&space;\frac{1}{2}x^TPx+q^T+r;%20P%20\in%20S^n%20{\color{Red}%20\textup{%20convex}%20\textup{%20if%20}%20P%20\succeq%200}" title="\frac{1}{2}x^TPx+q^T+r;%20P%20\in%20S^n%20{\color{Red}%20\textup{%20convex}%20\textup{%20if%20}%20P%20\succeq%200}" />-->
 
-### \< Homework one >
+### \< Homework two >
 Unconstrained optimization algorithms 
 * Line Search methods
   * Find a [`decent direction`](https://en.wikipedia.org/wiki/Descent_direction)
