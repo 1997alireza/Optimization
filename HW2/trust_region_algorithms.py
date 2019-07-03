@@ -1,5 +1,6 @@
 import numpy as np
 from HW2.tools import norm_p
+from HW2.functions import RosenbrockProvider
 import matplotlib.pyplot as plt
 
 

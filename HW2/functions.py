@@ -30,6 +30,7 @@ class LeastSquares:
     def __init__(self, A, b):
         A_shape = np.shape(A)
         b_shape = np.shape(b)
+        print(A_shape, b_shape)
         assert len(b_shape) == 1 and len(A_shape) == 2 and b_shape[0] == A_shape[0] == A_shape[1]
         self.A = A
         self.b = b

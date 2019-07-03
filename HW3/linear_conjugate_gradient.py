@@ -1,5 +1,7 @@
 import numpy as np
 from numpy import matmul as matmul
+from numpy.linalg import norm
+import time
 
 
 class LinearConjugateGradient:
@@ -21,7 +23,7 @@ class LinearConjugateGradient:
     def residual(self):
         return np.matmul(self.A, self.x) - self.b
 
-    _MAX_ITER, _TOLERANCE = 100000, .00001
+    _MAX_ITER, _TOLERANCE = 100000, .00000001
     def solve(self):
         r = self.residual()
         p = -r
@@ -31,7 +33,9 @@ class LinearConjugateGradient:
         x = self.x
 
         k = 0
-        while k <= self._MAX_ITER and r > self._TOLERANCE:
+
+        time_start_sec = time.time()
+        while k <= self._MAX_ITER and norm(r) > self._TOLERANCE:
             pAp = matmul(matmul(p.T, A), p)
             alpha = - matmul(r.T, p) / pAp
             x += alpha * p
@@ -41,10 +45,6 @@ class LinearConjugateGradient:
 
             k += 1
 
-        return x
+        time_end_sec = time.time()
 
-    def reset_parameters(self, A=None, b=None):
-        if not A:
-            self.A = A
-        if not b:
-            self.b = b
+        return x, (time_end_sec - time_start_sec)
