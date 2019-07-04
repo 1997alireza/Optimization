@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import matmul
 from numpy.linalg import inv as matinv, norm
+from numpy.linalg import LinAlgError
 from math import log
 from HW3.function_provider import FunctionProvider
 
@@ -36,7 +37,14 @@ def backtracking_line_length(f_provider, x, p):
 
 
 def compute_newton_step_unconstrained_problem(f_provider, x):
-    return -matmul(matinv(f_provider.hessian(x)), f_provider.grad(x))
+    h = f_provider.hessian(x)
+    try:
+        h_inv = matinv(h)
+    except LinAlgError:  # when the hessian is not invertible
+        h += np.diag([1] * np.shape(h)[0])
+        h_inv = matinv(h)
+
+    return -matmul(h_inv, f_provider.grad(x))
 
 
 def newton_method_unconstrained_problem(f_provider, x0):
@@ -45,12 +53,12 @@ def newton_method_unconstrained_problem(f_provider, x0):
     """
     x = np.reshape(x0, [-1, 1])
 
-    for i in range(500):
+    for i in range(300):
         delta_x = compute_newton_step_unconstrained_problem(f_provider, x)
         h = f_provider.hessian(x)
         landa_pow2 = abs(matmul(matmul(delta_x.T, h), delta_x)[0][0])
 
-        if landa_pow2/2 <= 10:
+        if landa_pow2/2 <= 20:
             return x, i
 
         t = backtracking_line_length(f_provider, x, delta_x)
@@ -89,6 +97,7 @@ def barrier_method_phase_one(f_provider, P, q, mu):
 def barrier_method(f_provider, P, q, x=None, mu=2.):
     """
     solving min f(x), subject to P.x <= q
+    q should be positive
     """
     q = np.reshape(q, (-1, 1))
     m = np.shape(q)[0]
@@ -149,7 +158,10 @@ def barrier_method(f_provider, P, q, x=None, mu=2.):
     while True:
         x, newton_iter_num = newton_method_unconstrained_problem(t * f_provider + phi, x)
         duality_gap = m/t
-        newton_iters.append(newton_iter_num)
+        if len(newton_iters) > 0:
+            newton_iters.append(newton_iter_num + newton_iters[-1])
+        else:
+            newton_iters.append(newton_iter_num)
         gaps.append(duality_gap)
         if duality_gap < EASY_TOLERANCE:
             return x, newton_iters, gaps
