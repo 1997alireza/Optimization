@@ -97,6 +97,37 @@ def primal_dual_interior_point(f_provider, P, q, mu=10):
         r_feas.append(r_dual_norm)
 
         if r_dual_norm <= TOLERANCE and n_hat <= TOLERANCE:
-            return x
+            return x, iterations, surrogate_duality_gaps, r_feas
 
     return x, iterations, surrogate_duality_gaps, r_feas
+
+if __name__ == '__main__':
+    from HW3.matrices import *
+    from HW3.function_provider import QuadraticFunctionProvider
+    from matplotlib import pyplot as plt
+    n = 10
+    b = np.ones(n)
+    P = np.random.rand(n, n)
+    q = np.random.rand(n, 1) + np.ones([n, 1])
+
+    A = tridiag(size=n)
+
+    quadratic_provider = QuadraticFunctionProvider(A, b)
+
+    _, iterations, surrogate_duality_gaps, r_feas = primal_dual_interior_point(quadratic_provider, P, q)
+
+    plt.plot(iterations, surrogate_duality_gaps)
+    # plt.yscale('log')
+    plt.xlabel('Iterations')
+    plt.ylabel('Surrogate Duality gap')
+    plt.title('Primal-Dual Interior-Point')
+    plt.show()
+
+    plt.plot(iterations, r_feas)
+    # plt.yscale('log')
+    plt.xlabel('Iterations')
+    plt.ylabel('Feasibility Residual')
+    plt.title('Primal-Dual Interior-Point')
+    plt.show()
+
+    print(surrogate_duality_gaps)
