@@ -10,17 +10,28 @@ Under supervision of [Dr. Maryam Amirmazlaghani](http://ceit.aut.ac.ir/autcms/pe
 
 ### \< Homework two >
 **Unconstrained optimization** algorithms 
-* Line Search methods
+* [Line Search methods](https://people.maths.ox.ac.uk/hauser/hauser_lecture2.pdf)
   * Find a [`decent direction`](https://en.wikipedia.org/wiki/Descent_direction)
     * Steepest Decent
     * Newton
     * BFGS (a Quasi-Newton method)
   * Find a step length that satisfies [`wolfe conditions`](https://en.wikipedia.org/wiki/Wolfe_conditions)
     * Backtracking Line Search
-    
-* Trust Region methods
+
+* [Trust Region methods](https://optimization.mccormick.northwestern.edu/index.php/Trust-region_methods)
   * Construct a model function as   <code>ƒ<sub>k</sub> + p<sup>T</sup>∇ƒ<sub>k</sub> + 0.5 p<sup>T</sup>B<sub>k</sub>p</code>    by choosing a matrix as B<sub>k</sub>
     * Hessian Matrix
   * Solve the constrained subproblem and find a step
     * Cauchy Point
     * Dogleg
+    
+### \< Homework three >
+**Unconstrained optimization** algorithms
+<br/><i>Solving large linear systems of equations: <code>Ax = b</code> or <code><b>min<sub>x</sub></b> 0.5 x<sup>T</sup>Ax - b<sup>T</sup>x</code></i>
+* [Linear Conjugate Gradient](https://en.wikipedia.org/wiki/Conjugate_gradient_method)
+
+**Constrained optimization** algorithms
+<br/><i>Solving inequality constrained minimization: <code><b>min<sub>x</sub></b> 0.5 x<sup>T</sup>Ax - b<sup>T</sup>x <b>s.t.</b> Px ≼ q</code></i>
+* [Log Barrier](http://www.stat.cmu.edu/~ryantibs/convexopt-F15/lectures/15-barr-method.pdf)
+  * Solving an equality constrained minimization using [Newton method](http://www.math.uwaterloo.ca/~hwolkowi//henry/reports/talks.d/t06talks.d/06msribirs.d/summercoursemsri07.d/equalconstrminbookpgs.pdf) on each iteration
+* [Primal Dual Interior Point](http://www.cs.cmu.edu/~pradeepr/convexopt/Lecture_Slides/primal-dual.pdf)
